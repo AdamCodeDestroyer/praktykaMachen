@@ -16,7 +16,7 @@ sources = [
     {
         "url": "https://www.coindesk.com/",
         "topic": "Crypto",
-        "link_filter": "/news/"
+        "link_filter": "-"
     },
     {
         "url": "https://finance.yahoo.com/",
@@ -52,6 +52,21 @@ for source in sources:
             
         soup = BeautifulSoup(response.text, 'html.parser')
         article_links = set()
+
+        for a_tag in soup.find_all('a', href=True):
+            href = a_tag['href'].strip()
+
+            if href.startswith('/'):
+                base_url = "/".join(category_url.split("/"[:3]))
+                href = base_url + href
+
+            if link_filter in href and href.startswith("http"):
+                if source["topic"] == "Stocks" and href.endswith("/news/"):
+                    continue
+                article_links.add(href)
+
+        for link in list(article_links)[:3]:
+            print(f"{link}")
         
     except Exception as e:
         print(f"Błąd połączenia: {e}")
