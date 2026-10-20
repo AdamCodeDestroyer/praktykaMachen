@@ -4,15 +4,7 @@ from mysql.connector import IntegrityError
 import requests
 from bs4 import BeautifulSoup
 
-db = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    password="",
-    database="praktyki"
-)
-cursor = db.cursor()
-
-print("Connected:", db.is_connected())
+INTERVAL = 60 * 60
 
 sources = [
     {
@@ -93,74 +85,103 @@ def parse_article(url):
         print(f"   [!] Error fetching article {url}: {e}")
         return None
 
-cursor.execute("SELECT SiteURL FROM articlescrapper")
-known_urls = {row[0] for row in cursor.fetchall()}
-print(f"Artykułów już w bazie: {len(known_urls)}")
 
-for source in sources:
-    category_url = source["url"]
-    topic = source["topic"]
-    link_filter = source["link_filter"]
+def run_scraper():
+    db = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="",
+        database="praktyki"
+    )
+    cursor = db.cursor()
+    print("Connected:", db.is_connected())
 
-    print("\n" + "=" * 80)
-    print(f"Kategoria: {topic}")
-    print("=" * 80)
+    try: 
+        cursor.execute("SELECT SiteURL FROM articlescrapper")
+        known_urls = {row[0] for row in cursor.fetchall()}
+        print(f"Artykułów już w bazie: {len(known_urls)}")
 
-    try:
-        response = requests.get(category_url, headers=headers, timeout=10)
-        if response.status_code != 200:
-            continue
+        for source in sources:
+            category_url = source["url"]
+            topic = source["topic"]
+            link_filter = source["link_filter"]
 
-        soup = BeautifulSoup(response.text, 'html.parser')
-        article_links = set()
-
-        for a_tag in soup.find_all('a', href=True):
-            href = a_tag['href'].strip()
-
-            if href.startswith('/'):
-                base_url = "/".join(category_url.split("/")[:3])
-                href = base_url + href
-
-            href = href.split('#')[0].split('?')[0].rstrip('/')
-
-            if link_filter in href and href.startswith("http"):
-                if "/videos/" in href or href.endswith("/news") or href.count('/') < 4:
-                    continue
-                article_links.add(href)
-
-        new_links = [l for l in article_links if l not in known_urls]
-        print(f"Znaleziono {len(article_links)} linków, nowych: {len(new_links)}")
-
-        for link in new_links:
-            article_data = parse_article(link)
-            if not article_data:
-                continue
-
-            headings_text = " | ".join(article_data['headings']) if article_data['headings'] else "No headings found"
-
-            print(f"\nURL:       {link}")
-            print(f"AUTHOR:    {article_data['author']}")
-            print(f"TITLE:     {article_data['title']}")
-            print(f"HEADINGS:  {headings_text}")
-            print(f"TEXT:      {article_data['content'][:200]}...")
+            print("\n" + "=" * 80)
+            print(f"Kategoria: {topic}")
+            print("=" * 80)
 
             try:
-                cursor.execute(
-                    """INSERT INTO articlescrapper (Topic, SiteURL, Author, Title, Heading, Text)
-                       VALUES (%s, %s, %s, %s, %s, %s)""",
-                    (topic, link, article_data['author'], article_data['title'],
-                     headings_text, article_data['content'])
-                )
-                db.commit()
-                known_urls.add(link)
-            except IntegrityError:
-                print("   [!] Duplikat, pomijam")
+                response = requests.get(category_url, headers=headers, timeout=10)
+                if response.status_code != 200:
+                    continue
 
-            time.sleep(1)
+                soup = BeautifulSoup(response.text, 'html.parser')
+                article_links = set()
 
-    except Exception as e:
-        print(f"Connection error: {e}")
+                for a_tag in soup.find_all('a', href=True):
+                    href = a_tag['href'].strip()
 
-cursor.close()
-db.close()
-print("\nGotowe.")
+                    if href.startswith('/'):
+                        base_url = "/".join(category_url.split("/")[:3])
+                        href = base_url + href
+
+                    href = href.split('#')[0].split('?')[0].rstrip('/')
+
+                    if link_filter in href and href.startswith("http"):
+                        if "/videos/" in href or href.endswith("/news") or href.count('/') < 4:
+                            continue
+                        article_links.add(href)
+
+                new_links = [l for l in article_links if l not in known_urls]
+                print(f"Znaleziono {len(article_links)} linków, nowych: {len(new_links)}")
+
+                for link in new_links:
+                    article_data = parse_article(link)
+                    if not article_data:
+                        continue
+
+                    headings_text = " | ".join(article_data['headings']) if article_data['headings'] else "No headings found"
+
+                    print(f"\nURL:       {link}")
+                    print(f"AUTHOR:    {article_data['author']}")
+                    print(f"TITLE:     {article_data['title']}")
+                    print(f"HEADINGS:  {headings_text}")
+                    print(f"TEXT:      {article_data['content'][:200]}...")
+
+                    try:
+                        cursor.execute(
+                            """INSERT INTO articlescrapper (Topic, SiteURL, Author, Title, Heading, Text)
+                               VALUES (%s, %s, %s, %s, %s, %s)""",
+                            (topic, link, article_data['author'], article_data['title'],
+                             headings_text, article_data['content'])
+                        )
+                        db.commit()
+                        known_urls.add(link)
+                    except IntegrityError:
+                        print("   [!] Duplikat, pomijam")
+
+                    time.sleep(1)
+
+            except Exception as e:
+                print(f"Connection error: {e}")
+
+    finally:  # NOWE
+        cursor.close()
+        db.close()
+        print("Połączenie zamknięte.")
+
+
+if __name__ == "__main__": 
+    while True:
+        started = time.time()
+        print(f"\n===== Start: {time.strftime('%Y-%m-%d %H:%M:%S')} =====")
+
+        try:
+            run_scraper()
+        except Exception as e:
+            print(f"[!] Błąd w przebiegu: {e}")
+
+        elapsed = time.time() - started
+        sleep_for = max(0, INTERVAL - elapsed)
+        print(f"Następne uruchomienie za {int(sleep_for // 60)} min.")
+        time.sleep(sleep_for)
