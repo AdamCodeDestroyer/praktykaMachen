@@ -1,2 +1,4 @@
 # praktykaMachen
-no praktyki tutaj będą cn
+
+In the console type:
+    python -m pip install -r requirements.txt
