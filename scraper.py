@@ -3,8 +3,12 @@ import mysql.connector
 from mysql.connector import IntegrityError
 import requests
 from bs4 import BeautifulSoup
+from datetime import datetime
 
 INTERVAL = 60 * 60
+
+YEAR = datetime.now().year
+YEAR_FILTER = f"/{YEAR}/"
 
 sources = [
     {
@@ -17,25 +21,25 @@ sources = [
         "name": "US Financial Policy",
         "url": "https://www.cnbc.com/id/15839069",
         "topic": "US Financial Policy",
-        "link_filter": "/2026/"
+        "link_filter": YEAR_FILTER
     },
     {
         "name": "Business",
         "url": "https://www.cnbc.com/business/",
         "topic": "Business",
-        "link_filter": "/2026/"
+        "link_filter": YEAR_FILTER
     },
     {
         "name": "Fortune",
         "url": "https://fortune.com/",
         "topic": "Business",
-        "link_filter": "/2026/"
+        "link_filter": YEAR_FILTER
     },
     {
         "name": "The Guardian Business",
         "url": "https://www.theguardian.com/business",
         "topic": "Business",
-        "link_filter": "/2026/"
+        "link_filter": YEAR_FILTER
     }
 ]
 
