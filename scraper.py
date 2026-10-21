@@ -170,7 +170,7 @@ def run_scraper():
             except Exception as e:
                 print(f"Connection error: {e}")
 
-    finally:  # NOWE
+    finally:  
         cursor.close()
         db.close()
         print("Połączenie zamknięte.")
