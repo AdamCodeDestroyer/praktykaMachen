@@ -120,7 +120,7 @@ def run_scraper():
                     continue
 
                 soup = BeautifulSoup(response.text, 'html.parser')
-                article_links = set()
+                article_links = []
 
                 for a_tag in soup.find_all('a', href=True):
                     href = a_tag['href'].strip()
@@ -134,12 +134,13 @@ def run_scraper():
                     if link_filter in href and href.startswith("http"):
                         if "/videos/" in href or href.endswith("/news") or href.count('/') < 4:
                             continue
-                        article_links.add(href)
+                        if href not in article_links:
+                            article_links.append(href)
 
                 new_links = [l for l in article_links if l not in known_urls]
                 print(f"Znaleziono {len(article_links)} linków, nowych: {len(new_links)}")
 
-                for link in new_links:
+                for link in new_links[:5]:
                     article_data = parse_article(link)
                     if not article_data:
                         continue
@@ -154,7 +155,7 @@ def run_scraper():
 
                     try:
                         cursor.execute(
-                            """INSERT INTO articlescrapper (Topic, SiteURL, Author, Title, Heading, Text)
+                            """INSERT INTO articlescrapper (Topic, SiteURL, Author, Title, Header, Text)
                                VALUES (%s, %s, %s, %s, %s, %s)""",
                             (topic, link, article_data['author'], article_data['title'],
                              headings_text, article_data['content'])
