@@ -1,0 +1,26 @@
+{
+    "open sans": {
+        "normal": "C:\/xampp\/htdocs\/bilety\/wp-content\/uploads\/wpo_wcpdf_ca2802b64cd64061fcc7fc034b4ff7c7\/fonts\/OpenSans-Normal",
+        "bold": "C:\/xampp\/htdocs\/bilety\/wp-content\/uploads\/wpo_wcpdf_ca2802b64cd64061fcc7fc034b4ff7c7\/fonts\/OpenSans-Bold",
+        "italic": "C:\/xampp\/htdocs\/bilety\/wp-content\/uploads\/wpo_wcpdf_ca2802b64cd64061fcc7fc034b4ff7c7\/fonts\/OpenSans-Italic",
+        "bold_italic": "C:\/xampp\/htdocs\/bilety\/wp-content\/uploads\/wpo_wcpdf_ca2802b64cd64061fcc7fc034b4ff7c7\/fonts\/OpenSans-BoldItalic"
+    },
+    "segoe": {
+        "normal": "C:\/xampp\/htdocs\/bilety\/wp-content\/uploads\/wpo_wcpdf_ca2802b64cd64061fcc7fc034b4ff7c7\/fonts\/Segoe-Normal",
+        "bold": "C:\/xampp\/htdocs\/bilety\/wp-content\/uploads\/wpo_wcpdf_ca2802b64cd64061fcc7fc034b4ff7c7\/fonts\/Segoe-Bold",
+        "italic": "C:\/xampp\/htdocs\/bilety\/wp-content\/uploads\/wpo_wcpdf_ca2802b64cd64061fcc7fc034b4ff7c7\/fonts\/Segoe-Italic",
+        "bold_italic": "C:\/xampp\/htdocs\/bilety\/wp-content\/uploads\/wpo_wcpdf_ca2802b64cd64061fcc7fc034b4ff7c7\/fonts\/Segoe-BoldItalic"
+    },
+    "roboto slab": {
+        "normal": "C:\/xampp\/htdocs\/bilety\/wp-content\/uploads\/wpo_wcpdf_ca2802b64cd64061fcc7fc034b4ff7c7\/fonts\/RobotoSlab-Normal",
+        "bold": "C:\/xampp\/htdocs\/bilety\/wp-content\/uploads\/wpo_wcpdf_ca2802b64cd64061fcc7fc034b4ff7c7\/fonts\/RobotoSlab-Bold",
+        "italic": "C:\/xampp\/htdocs\/bilety\/wp-content\/uploads\/wpo_wcpdf_ca2802b64cd64061fcc7fc034b4ff7c7\/fonts\/RobotoSlab-Italic",
+        "bold_italic": "C:\/xampp\/htdocs\/bilety\/wp-content\/uploads\/wpo_wcpdf_ca2802b64cd64061fcc7fc034b4ff7c7\/fonts\/RobotoSlab-BoldItalic"
+    },
+    "currencies": {
+        "normal": "C:\/xampp\/htdocs\/bilety\/wp-content\/uploads\/wpo_wcpdf_ca2802b64cd64061fcc7fc034b4ff7c7\/fonts\/currencies",
+        "bold": "C:\/xampp\/htdocs\/bilety\/wp-content\/uploads\/wpo_wcpdf_ca2802b64cd64061fcc7fc034b4ff7c7\/fonts\/currencies",
+        "italic": "C:\/xampp\/htdocs\/bilety\/wp-content\/uploads\/wpo_wcpdf_ca2802b64cd64061fcc7fc034b4ff7c7\/fonts\/currencies",
+        "bold_italic": "C:\/xampp\/htdocs\/bilety\/wp-content\/uploads\/wpo_wcpdf_ca2802b64cd64061fcc7fc034b4ff7c7\/fonts\/currencies"
+    }
+}

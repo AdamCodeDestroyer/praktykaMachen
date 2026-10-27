@@ -1,0 +1,16 @@
+Jak uruchomić projekt u siebie:
+Wymagania:
+Upewnij się, że masz zainstalowane wszystkie potrzebne biblioteki ktore macie napisane na github w pliku requirements.txt
+
+Baza danych:
+Uruchom XAMPP i upewnij się, że usługa MySQL jest włączona.
+Zaimportuj bazę danych (articlescrapper) do swojego phpMyAdmina.
+
+Uruchomienie API:
+Wpisz w terminalu poniższą komendę:
+uvicorn main:app --reload
+
+Dostęp do API:
+Po uruchomieniu w terminalu pojawi się link (zazwyczaj http://127.0.0.1:8000, http://127.0.0.1:8000).
+musicie do tego dopisac na koncu http://127.0.0.1:8000/articles zeby pokazało wam zapisane artykuly
+Żeby wejść w interaktywną dokumentację, dopisz na końcu /docs, czyli wejdź w:[http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
