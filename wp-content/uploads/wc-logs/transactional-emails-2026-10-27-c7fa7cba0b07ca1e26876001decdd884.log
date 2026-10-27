@@ -1,0 +1,4 @@
+2026-10-27T09:48:16+00:00 NOTICE Email "customer_completed_order" for order #19 not sent: no_recipient CONTEXT: {"email_type":"customer_completed_order","status":"skipped","recipient":"guest","reason":"no_recipient","order":19}
+2026-10-27T09:48:20+00:00 WARNING Email "new_order" for order #19 failed to send: Nie można utworzyć instancji funkcji poczty. CONTEXT: {"email_type":"new_order","status":"failed","recipient":"admin","order":19}
+2026-10-27T09:50:08+00:00 NOTICE Email "customer_completed_order" for order #19 not sent: no_recipient CONTEXT: {"email_type":"customer_completed_order","status":"skipped","recipient":"guest","reason":"no_recipient","order":19}
+2026-10-27T09:50:10+00:00 WARNING Email "new_order" for order #19 failed to send: Nie można utworzyć instancji funkcji poczty. CONTEXT: {"email_type":"new_order","status":"failed","recipient":"admin","order":19}
